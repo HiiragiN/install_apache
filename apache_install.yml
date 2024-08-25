@@ -1,0 +1,41 @@
+---
+- name: Install Apache from source on RHEL9
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.yum:
+        name:
+          - gcc
+          - make
+          - pcre-devel
+          - openssl-devel
+
+    - name: Create directory for Apache source
+      ansible.builtin.file:
+        path: /usr/local/src
+        state: directory
+
+    - name: Download Apache source tarball
+      ansible.builtin.get_url:
+        url: "http://archive.apache.org/dist/httpd/httpd-2.4.62.tar.gz"
+        dest: /usr/local/src
+
+    - name: Extract Apache source
+      ansible.builtin.unarchive:
+        src: /usr/local/src/httpd-2.4.62.tar.gz
+        dest: /usr/local/src
+        remote_src: yes
+
+    - name: Configure Apache
+      ansible.builtin.shell:
+        chdir: /usr/local/src/httpd-2.4.62
+        cmd: ./configure --prefix=/usr/local/apache2
+
+    - name: Make and install Apache
+      ansible.builtin.shell:
+        chdir: /usr/local/src/httpd-2.4.62
+        cmd: |
+          make
+          make install
