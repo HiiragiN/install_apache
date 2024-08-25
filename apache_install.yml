@@ -1,37 +1,13 @@
 ---
-- name: Install Apache from source
+- name: Install Apache
   hosts: all
   become: yes
-
   tasks:
-    - name: Install packages
-      ansible.builtin.shell:
-        cmd: apt install -y gcc make pcre-devel openssl-devel
+    - name: Update package cache
+      apt:
+        update_cache: yes
 
-    - name: Create directory for Apache source
-      ansible.builtin.file:
-        path: /usr/local/src
-        state: directory
-
-    - name: Download Apache source tarball
-      ansible.builtin.get_url:
-        url: "http://archive.apache.org/dist/httpd/httpd-2.4.62.tar.gz"
-        dest: /usr/local/src
-
-    - name: Extract Apache source
-      ansible.builtin.unarchive:
-        src: /usr/local/src/httpd-2.4.62.tar.gz
-        dest: /usr/local/src
-        remote_src: yes
-
-    - name: Configure Apache
-      ansible.builtin.shell:
-        chdir: /usr/local/src/httpd-2.4.62
-        cmd: ./configure --prefix=/usr/local/apache2
-
-    - name: Make and install Apache
-      ansible.builtin.shell:
-        chdir: /usr/local/src/httpd-2.4.62
-        cmd: |
-          make
-          make install
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
