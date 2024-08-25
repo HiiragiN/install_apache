@@ -7,13 +7,11 @@
 
   tasks:
     - name: Install packages
-      ansible.builtin.rpm:
-        name:
-          - gcc
-          - make
-          - pcre-devel
-          - openssl-devel
-        state: present
+      ansible.builtin.shell:
+        cmd: |
+          for package in gcc make pcre-devel openssl-devel; do
+            rpm -q $package || rpm -i $package
+          done
     
     # - name: Install packages
     #   ansible.builtin.shell:
