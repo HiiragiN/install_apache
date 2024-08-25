@@ -1,9 +1,7 @@
 ---
 - name: Install Apache from source
-  hosts: my_server1
+  hosts: all
   become: yes
-  # vars:
-  #   ansible_python_interpreter: /usr/libexec/platform-python
 
   tasks:
     - name: Install packages
