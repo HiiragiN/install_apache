@@ -1,6 +1,6 @@
 ---
 - name: Install Apache from source
-  hosts: localhost
+  hosts: Web
   become: yes
   # vars:
   #   ansible_python_interpreter: /usr/libexec/platform-python
