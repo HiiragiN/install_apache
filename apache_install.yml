@@ -8,7 +8,14 @@
   tasks:
     - name: Install packages
       ansible.builtin.shell:
-        cmd: yum install -y gcc make pcre-devel openssl-devel
+        cmd: |
+          for package in gcc make pcre-devel openssl-devel; do
+            rpm -q $package || rpm -i $package
+          done
+    
+    - name: Install packages
+      ansible.builtin.shell:
+        cmd: dnf install -y gcc make pcre-devel openssl-devel
 
     - name: Create directory for Apache source
       ansible.builtin.file:
