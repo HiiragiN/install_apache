@@ -2,6 +2,8 @@
 - name: Install Apache from source on RHEL9
   hosts: localhost
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
     - name: Install required packages
